@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Retail Sales Management System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Tailwind CDN (ok for assignment / dev) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ["Inter", "system-ui"] },
+                    boxShadow: { card: "0 4px 12px rgba(15, 23, 42, 0.10)" }
+                }
+            }
+        };
+    </script>
+</head>
+
+<body class="bg-slate-100 font-sans text-slate-900">
+<div class="min-h-screen flex">
+
+    <!-- STATIC SIDEBAR (no functionality needed) -->
+    <aside class="w-60 bg-white border-r border-slate-200 flex flex-col">
+        <div class="p-6 text-xl font-semibold border-b border-slate-200">
+            Vault
+        </div>
+
+        <nav class="flex-1 p-4 space-y-1 text-sm text-slate-700">
+            <div class="font-semibold text-xs text-slate-400 uppercase mb-1">Main</div>
+            <a class="block px-3 py-2 rounded-lg hover:bg-slate-100 cursor-default">Dashboard</a>
+            <a class="block px-3 py-2 rounded-lg hover:bg-slate-100 cursor-default">Services</a>
+            <a class="block px-3 py-2 rounded-lg hover:bg-slate-100 cursor-default">Intake</a>
+
+            <div class="mt-4 font-semibold text-xs text-slate-400 uppercase mb-1">Invoices</div>
+            <a class="block px-3 py-2 rounded-lg hover:bg-slate-100 cursor-default">Proforma Invoices</a>
+            <a class="block px-3 py-2 rounded-lg hover:bg-slate-100 cursor-default">Final Invoices</a>
+        </nav>
+    </aside>
+
+    <!-- MAIN AREA -->
+    <div class="flex-1 flex flex-col">
+
+        <!-- HEADER -->
+        <header class="bg-slate-900 text-white px-8 py-5 shadow-lg">
+            <h1 class="text-2xl font-semibold mb-3">Sales Management System</h1>
+        </header>
+
+        <!-- MAIN CONTENT -->
+        <main class="flex-1 flex flex-col gap-4 px-8 py-5">
+
+            <!-- FILTER BAR -->
+            <section
+                    class="bg-white rounded-xl shadow-card border border-slate-200 px-4 py-3
+                           flex flex-wrap items-center gap-3">
+                <!-- Region -->
+                <div class="relative">
+                    <button
+                            id="btn-region"
+                            type="button"
+                            class="border border-slate-300 px-3 py-2 rounded-lg bg-white text-sm
+                                   flex items-center gap-2 min-w-[140px]">
+                        <span id="filter-region-label">Region</span>
+                        <span class="text-xs">▾</span>
+                    </button>
+                    <div
+                            id="region-menu"
+                            class="hidden absolute z-20 mt-1 bg-white border border-slate-200 rounded-lg
+                                   shadow-card w-48 max-h-64 overflow-auto text-sm">
+                    </div>
+                </div>
+
+                <!-- Gender -->
+                <div class="relative">
+                    <button
+                            id="btn-gender"
+                            type="button"
+                            class="border border-slate-300 px-3 py-2 rounded-lg bg-white text-sm
+                                   flex items-center gap-2 min-w-[120px]">
+                        <span id="filter-gender-label">Gender</span>
+                        <span class="text-xs">▾</span>
+                    </button>
+                    <div
+                            id="gender-menu"
+                            class="hidden absolute z-20 mt-1 bg-white border border-slate-200 rounded-lg
+                                   shadow-card w-40 max-h-64 overflow-auto text-sm">
+                    </div>
+                </div>
+
+                <!-- Age range -->
+                <input
+                        id="filter-age-min"
+                        type="number"
+                        placeholder="Age Min"
+                        class="border border-slate-300 rounded-lg px-2 py-2 text-sm w-24"/>
+
+                <input
+                        id="filter-age-max"
+                        type="number"
+                        placeholder="Age Max"
+                        class="border border-slate-300 rounded-lg px-2 py-2 text-sm w-24"/>
+
+                <!-- Product Category -->
+                <div class="relative">
+                    <button
+                            id="btn-category"
+                            type="button"
+                            class="border border-slate-300 px-3 py-2 rounded-lg bg-white text-sm
+                                   flex items-center gap-2 min-w-[160px]">
+                        <span id="filter-category-label">Product Category</span>
+                        <span class="text-xs">▾</span>
+                    </button>
+                    <div
+                            id="category-menu"
+                            class="hidden absolute z-20 mt-1 bg-white border border-slate-200 rounded-lg
+                                   shadow-card w-52 max-h-64 overflow-auto text-sm">
+                    </div>
+                </div>
+
+                <!-- Tags -->
+                <div class="relative">
+                    <button
+                            id="btn-tags"
+                            type="button"
+                            class="border border-slate-300 px-3 py-2 rounded-lg bg-white text-sm
+                                   flex items-center gap-2 min-w-[140px]">
+                        <span id="filter-tags-label">Tags</span>
+                        <span class="text-xs">▾</span>
+                    </button>
+                    <div
+                            id="tags-menu"
+                            class="hidden absolute z-20 mt-1 bg-white border border-slate-200 rounded-lg
+                                   shadow-card w-52 max-h-64 overflow-auto text-sm">
+                    </div>
+                </div>
+
+                <!-- Payment -->
+                <div class="relative">
+                    <button
+                            id="btn-payment"
+                            type="button"
+                            class="border border-slate-300 px-3 py-2 rounded-lg bg-white text-sm
+                                   flex items-center gap-2 min-w-[140px]">
+                        <span id="filter-payment-label">Payment</span>
+                        <span class="text-xs">▾</span>
+                    </button>
+                    <div
+                            id="payment-menu"
+                            class="hidden absolute z-20 mt-1 bg-white border border-slate-200 rounded-lg
+                                   shadow-card w-52 max-h-64 overflow-auto text-sm">
+                    </div>
+                </div>
+
+                <!-- Dates -->
+                <div class="flex gap-2 items-center">
+    <input
+        id="filter-date-from"
+        type="date"
+        class="border border-slate-300 rounded-lg px-2 py-2 text-sm min-w-[140px]" />
+
+    <input
+        id="filter-date-to"
+        type="date"
+        class="border border-slate-300 rounded-lg px-2 py-2 text-sm min-w-[140px]" />
+</div>
+
+                <!-- Spacer -->
+                <div class="flex-1"></div>
+
+                <!-- Search -->
+                <input
+                        id="search-name"
+                        type="text"
+                        placeholder="Search name or phone…"
+                        class="border border-slate-300 rounded-lg px-3 py-2 text-sm min-w-[200px]"/>
+
+                <!-- Sort -->
+                <select
+                        id="sort-by"
+                        class="border border-slate-300 rounded-lg px-2 py-2 text-sm">
+                    <option value="date-desc">Date (Newest first)</option>
+                    <option value="date-asc">Date (Oldest first)</option>
+                    <option value="quantity-desc">Quantity (High → Low)</option>
+                    <option value="quantity-asc">Quantity (Low → High)</option>
+                    <option value="customer_name-asc">Customer Name (A–Z)</option>
+                    <option value="customer_name-desc">Customer Name (Z–A)</option>
+                </select>
+
+                <!-- Reset (icon + text) -->
+                <button
+                        id="filters-reset"
+                        class="flex items-center gap-1 text-sm text-slate-600 hover:text-slate-900
+                               border border-slate-300 rounded-lg px-3 py-2">
+                    <span>⟳</span>
+                    <span>Reset</span>
+                </button>
+            </section>
+
+            <!-- STATS (below filters) -->
+            <section id="stats-bar" class="flex flex-wrap gap-3 text-sm"></section>
+
+            <!-- TABLE CARD -->
+            <section
+                    id="table-wrapper"
+                    class="bg-white rounded-xl shadow-card border border-slate-200 flex flex-col flex-1 min-h-[400px]">
+                <!-- Top row: summary -->
+                <div class="flex items-center justify-between px-4 py-2 border-b border-slate-100 text-sm">
+                    <div class="font-medium text-slate-800">Transactions</div>
+                    <div id="result-summary" class="text-slate-500"></div>
+                </div>
+
+                <!-- Table container -->
+                <div id="table-container" class="flex-1 overflow-auto">
+                    <table class="min-w-full text-sm">
+                        <thead class="bg-slate-50 text-xs text-slate-600 border-b border-slate-200">
+                        <tr>
+                            <th class="px-3 py-2 text-left">Transaction ID</th>
+                            <th class="px-3 py-2 text-left">Date</th>
+                            <th class="px-3 py-2 text-left">Customer ID</th>
+                            <th class="px-3 py-2 text-left">Customer Name</th>
+                            <th class="px-3 py-2 text-left">Phone Number</th>
+                            <th class="px-3 py-2 text-left">Gender</th>
+                            <th class="px-3 py-2 text-center">Age</th>
+                            <th class="px-3 py-2 text-left">Product Category</th>
+                            <th class="px-3 py-2 text-right">Quantity</th>
+                            <th class="px-3 py-2 text-right">Total Amount</th>
+                        </tr>
+                        </thead>
+                        <tbody id="table-body" class="align-top"></tbody>
+                    </table>
+
+                    <!-- States -->
+                    <div id="empty-state" class="hidden px-4 py-3 text-sm text-slate-500">
+                        No records found for the selected criteria.
+                    </div>
+                    <div id="error-state" class="hidden px-4 py-3 text-sm text-red-600">
+                        Something went wrong while loading data. Please try again.
+                    </div>
+                    <div id="loading-state" class="hidden px-4 py-3 text-sm text-slate-500">
+                        Loading data…
+                    </div>
+                </div>
+            </section>
+
+            <!-- PAGINATION -->
+            <section id="pagination-bar" class="mt-2"></section>
+
+        </main>
+    </div>
+</div>
+
+<script type="module" src="./main.js?v=101"></script>
+</body>
+</html>

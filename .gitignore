@@ -1,0 +1,9 @@
+# Ignore raw dataset
+backend/data/sales.csv
+backend/database/sales.db
+
+# Ignore any temp files
+*.db
+*.csv
+*.pyc
+__pycache__/
